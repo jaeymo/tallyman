@@ -29,16 +29,6 @@ To uninstall:
 dotnet tool uninstall --global tallyman
 ```
 
-### As a standalone executable
-
-No .NET install needed on the machine that runs it.
-
-```
-dotnet publish src/tallyman.Cli -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
-```
-
-Swap `win-x64` for `linux-x64`, `osx-arm64`, or `osx-x64` as needed. The executable ends up in `src/tallyman.Cli/bin/Release/<framework>/<rid>/publish/`. Put it somewhere on your `PATH` to run it from anywhere.
-
 ## Usage
 
 ```
