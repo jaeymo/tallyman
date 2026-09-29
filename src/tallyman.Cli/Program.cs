@@ -1,2 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Spectre.Console.Cli;
+
+namespace tallyman.Cli;
+
+public class Program
+{
+    public static int Main(string[] args)
+    {
+        return new CommandApp<CountCommand>().Run(args);
+    }
+}

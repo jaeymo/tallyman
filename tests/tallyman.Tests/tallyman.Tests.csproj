@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\tallyman.Core\tallyman.Core.csproj" />
+    <ProjectReference Include="..\..\src\tallyman.Cli\tallyman.Cli.csproj" />
   </ItemGroup>
 
 </Project>
