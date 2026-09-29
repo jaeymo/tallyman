@@ -4,9 +4,9 @@ using Spectre.Console.Cli;
 
 public class CountSettings : CommandSettings
 {
-    [CommandArgument(0, "<directory>")]
-    [Description("The path to the target directory")]
-    public string Directory { get; init; } = string.Empty;
+    [CommandArgument(0, "<directories>")]
+    [Description("One or more directories to count")]
+    public string[] Directories { get; init; } = [];
 }
 
 public class CountCommand : Command<CountSettings>
@@ -16,17 +16,44 @@ public class CountCommand : Command<CountSettings>
         CountSettings settings,
         CancellationToken cancellationToken)
     {
-        if (!System.IO.Directory.Exists(settings.Directory))
+        foreach (string dir in settings.Directories)
         {
-            AnsiConsole.MarkupLine(
-                $"[red]✗ Directory not found:[/] [yellow]{Markup.Escape(settings.Directory)}[/]"
-            );
-            return 1;
+            if (!Directory.Exists(dir))
+            {
+                AnsiConsole.MarkupLine(
+                    $"[red]✗ Directory not found:[/] [yellow]{Markup.Escape(dir)}[/]"
+                );
+                return 1;
+            }
         }
 
-        string rootDirectory = Path.GetFullPath(settings.Directory);
+        int grandFiles = 0;
+        int grandLines = 0;
 
-        string[] files = System.IO.Directory
+        foreach (string dir in settings.Directories)
+        {
+            (int files, int lines) = CountDirectory(dir, cancellationToken);
+            grandFiles += files;
+            grandLines += lines;
+        }
+
+        if (settings.Directories.Length > 1)
+        {
+            AnsiConsole.Write(new Rule("[bold]Grand total[/]").LeftJustified().RuleStyle("grey"));
+            AnsiConsole.MarkupLine(
+                $"[bold green]{grandLines:N0}[/] lines across [bold]{grandFiles:N0}[/] files in [bold]{settings.Directories.Length}[/] directories"
+            );
+        }
+
+        AnsiConsole.MarkupLine("[green]✓ Done[/]");
+        return 0;
+    }
+
+    private static (int Files, int Lines) CountDirectory(string directory, CancellationToken cancellationToken)
+    {
+        string rootDirectory = Path.GetFullPath(directory);
+
+        string[] files = Directory
             .EnumerateFiles(rootDirectory, "*", SearchOption.AllDirectories)
             .OrderBy(file => file)
             .ToArray();
@@ -40,7 +67,7 @@ public class CountCommand : Command<CountSettings>
         if (files.Length == 0)
         {
             AnsiConsole.MarkupLine("[grey]No files found.[/]");
-            return 0;
+            return (0, 0);
         }
 
         var table = new Table()
@@ -76,8 +103,7 @@ public class CountCommand : Command<CountSettings>
         table.Columns[1].Footer = new Markup($"[bold green]{total:N0}[/]");
 
         AnsiConsole.Write(table);
-        AnsiConsole.MarkupLine("[green]✓ Done[/]");
 
-        return 0;
+        return (files.Length, total);
     }
 }

@@ -13,7 +13,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>tallyman</ToolCommandName>
     <PackageId>tallyman</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Description>Tallyman counts lines in every file under a directory.</Description>
   </PropertyGroup>
 

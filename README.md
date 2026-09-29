@@ -32,12 +32,12 @@ dotnet tool uninstall --global tallyman
 ## Usage
 
 ```
-tallyman <directory>
+tallyman <directories...>
 ```
 
-| Argument      | Description                     |
-| ------------- | ------------------------------- |
-| `<directory>` | The path to the target directory |
+| Argument          | Description                            |
+| ----------------- | -------------------------------------- |
+| `<directories...>` | One or more directories to count      |
 
 ### Examples
 
@@ -53,16 +53,22 @@ Count lines in a specific project:
 tallyman ~/projects/my-app
 ```
 
+Count lines from multiple directories:
+
+```
+tallyman ./Packages ./src
+```
+
 ### Output
 
-Files are listed alphabetically with paths relative to the target directory, followed by a footer with the file count and total lines.
+Each directory gets its own table, with files listed alphabetically and paths relative to that directory, followed by a footer with the file count and total lines. When you pass more than one directory, a grand total is printed at the end.
 
 ### Exit codes
 
 | Code | Meaning                                  |
 | ---- | ---------------------------------------- |
 | `0`  | Success (including when no files found)  |
-| `1`  | The given directory does not exist       |
+| `1`  | One of the given directories does not exist |
 
 ## Notes
 
