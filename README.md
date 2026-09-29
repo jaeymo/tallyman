@@ -1,29 +1,28 @@
 # tallyman
 
-A small command-line tool that counts the lines in every file under a directory and prints the results as a table with a running total.
+A small command-line tool that counts the lines in every file under one or more directories.
 
-Built with C# and [Spectre.Console](https://spectreconsole.net/).
+## Download
 
-## Install
-
-### As a .NET global tool
-
-Requires the [.NET SDK](https://dotnet.microsoft.com/download).
-
-From the solution root (the folder containing the `.sln`):
+Tallyman is published on NuGet as a .NET global tool. It requires the [.NET 10 SDK](https://dotnet.microsoft.com/download).
 
 ```
-dotnet pack src/tallyman.Cli -c Release
-dotnet tool install --global --add-source ./src/tallyman.Cli/bin/Release tallyman
+dotnet tool install --global tallyman
 ```
 
-To update after making changes, bump `<Version>` in `src/tallyman.Cli/tallyman.Cli.csproj`, pack again, then run:
+Check that it works:
 
 ```
-dotnet tool update --global --add-source ./src/tallyman.Cli/bin/Release tallyman
+tallyman --help
 ```
 
-To uninstall:
+Update to the latest version:
+
+```
+dotnet tool update --global tallyman
+```
+
+Uninstall:
 
 ```
 dotnet tool uninstall --global tallyman
@@ -35,9 +34,9 @@ dotnet tool uninstall --global tallyman
 tallyman <directories...>
 ```
 
-| Argument          | Description                            |
-| ----------------- | -------------------------------------- |
-| `<directories...>` | One or more directories to count      |
+| Argument           | Description                      |
+| ------------------ | -------------------------------- |
+| `<directories...>` | One or more directories to count |
 
 ### Examples
 
@@ -65,27 +64,68 @@ Each directory gets its own table, with files listed alphabetically and paths re
 
 ### Exit codes
 
-| Code | Meaning                                  |
-| ---- | ---------------------------------------- |
-| `0`  | Success (including when no files found)  |
+| Code | Meaning                                     |
+| ---- | ------------------------------------------- |
+| `0`  | Success (including when no files found)     |
 | `1`  | One of the given directories does not exist |
 
-## Notes
+### Notes
 
 - Subdirectories are searched recursively.
 - Every file is counted, including binary files, so pointing it at folders like `bin/`, `obj/`, or `.git/` will give meaningless numbers.
-- Colors are only shown in a real terminal. They are stripped when output is redirected (for example `tallyman . > out.txt`) or when the `NO_COLOR` environment variable is set.
+- If one path is inside another (for example `tallyman . ./src`), the overlapping files are counted twice.
 
-## Development
+## Source code
 
-Run from source:
+If you want to contribute, here is how you set up the dev environment:
+
+```
+git clone https://github.com/YOUR-USERNAME/tallyman.git
+cd tallyman
+```
+
+### Run from source
+
+You don't need to install anything to try it; from the repository root (the folder containing the `.sln`):
 
 ```
 dotnet run --project src/tallyman.Cli -- ./some-folder
 ```
 
-Run the tests:
+Everything after the `--` is passed to tallyman.
+
+### Run the tests
 
 ```
 dotnet test
 ```
+
+### Build and install your own copy
+
+To install a local build as the `tallyman` command, replacing the NuGet version if you have it:
+
+```
+dotnet pack src/tallyman.Cli -c Release
+dotnet tool uninstall --global tallyman
+dotnet tool install --global --add-source ./src/tallyman.Cli/bin/Release tallyman
+```
+
+After making changes, bump `<Version>` in `src/tallyman.Cli/tallyman.Cli.csproj` before packing again, or the tool will keep using the cached older package. Then update with:
+
+```
+dotnet tool update --global --add-source ./src/tallyman.Cli/bin/Release tallyman
+```
+
+### Standalone executable
+
+To build a single executable that runs without the .NET SDK installed:
+
+```
+dotnet publish src/tallyman.Cli -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
+```
+
+Swap `win-x64` for `linux-x64`, `osx-arm64`, or `osx-x64` as needed. The output goes to `src/tallyman.Cli/bin/Release/net10.0/<rid>/publish/`.
+
+## License
+
+MIT

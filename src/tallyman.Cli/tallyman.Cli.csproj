@@ -13,8 +13,22 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>tallyman</ToolCommandName>
     <PackageId>tallyman</PackageId>
-    <Version>1.0.1</Version>
-    <Description>Tallyman counts lines in every file under a directory.</Description>
+    <Version>1.0.2</Version>
+    <Description>Tallyman counts lines in every file under one or more directories.</Description>
+
+    <Authors>Jaeymo</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>cli;lines;loc;line-count;tool</PackageTags>
+    <PackageProjectUrl>https://github.com/jaeymo/tallyman</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jaeymo/tallyman</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Copyright>Copyright (c) 2026 Jaeymo</Copyright>
+    <PackageReleaseNotes>Multi-directory support and table output.</PackageReleaseNotes>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>
