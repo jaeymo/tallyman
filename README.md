@@ -1,6 +1,13 @@
 # tallyman
 
+[![NuGet](https://img.shields.io/nuget/v/tallyman.svg)](https://www.nuget.org/packages/tallyman)
+[![Downloads](https://img.shields.io/nuget/dt/tallyman.svg)](https://www.nuget.org/packages/tallyman)
+[![.NET 10](https://img.shields.io/badge/.NET-10-512BD4.svg)](https://dotnet.microsoft.com/download)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A small command-line tool that counts the lines in every file under one or more directories.
+
+> **A note on scope:** tallyman is a deliberately small package, built as a practice project for learning C#. If you need language detection, comment/blank-line breakdowns, or ignore rules, a more established tool like [cloc](https://github.com/AlDanial/cloc) or [tokei](https://github.com/XAMPPRocky/tokei) is a better fit.
 
 ## Download
 
